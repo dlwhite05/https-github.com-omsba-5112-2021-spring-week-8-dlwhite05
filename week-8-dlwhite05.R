@@ -61,4 +61,25 @@ r_squared <- summary(model)$r.squared
 cat('Mean Squared Error:', mse, '\n')
 cat('R-squared:', r_squared, '\n')
 
+# Relevant columns for second model
+model_data <- filtered_murders_1995[c("murdrate", "perc1019", "perc2029", "percblack", "percmale", "rpcpersinc")]
+
+# Fit the linear regression model
+model <- lm(murdrate ~ perc1019 + perc2029 + percblack + percmale + rpcpersinc, data = model_data)
+
+# Print the summary of the regression model
+summary(model)
+
+# Scatter plot of the actual vs. predicted values
+plot(model_data$murdrate, fitted(model), xlab = "Actual Murders per 10,000", ylab = "Predicted Murders per 10,000", main = "Actual vs. Predicted Murders per 10,000")
+abline(0, 1, col = "red")  # Adding a line of perfect prediction
+
+# Residual plot
+plot(model, which = 1)  # Residuals vs. Fitted plot
+
+# Histogram of residuals
+residuals <- residuals(model)  # Extract residuals from the model
+
+# Create a histogram of residuals
+hist(residuals, breaks = 20, col = "lightblue", main = "Histogram of Residuals", xlab = "Residuals")
 
